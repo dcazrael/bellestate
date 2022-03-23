@@ -1,3 +1,124 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes toNext {
+  75% {
+    left: 0;
+  }
+  95% {
+    left: 100%;
+  }
+  98% {
+    left: 100%;
+  }
+  99% {
+    left: 0;
+  }
+}
+
+@keyframes toStart {
+  75% {
+    left: 0;
+  }
+  95% {
+    left: -300%;
+  }
+  98% {
+    left: -300%;
+  }
+  99% {
+    left: 0;
+  }
+}
+
+@keyframes snap {
+  96% {
+    scroll-snap-align: center;
+  }
+  97% {
+    scroll-snap-align: none;
+  }
+  99% {
+    scroll-snap-align: none;
+  }
+  100% {
+    scroll-snap-align: center;
+  }
+}
+
+.snapper {
+  @apply absolute top-0 left-0 w-full h-full snap-center;
+}
+
+@media (hover: hover) {
+  .snapper {
+    animation-name: toNext, snap;
+    animation-timing-function: ease-in-out;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+  }
+
+  .slide:last-child .snapper {
+    animation-name: toStart, snap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snapper {
+    animation-name: none;
+  }
+}
+
+.field:focus + label,
+.field:not(:placeholder-shown) + label {
+  @apply -mt-8 text-base text-black bg-white cursor-default left-4 top-3;
+}
+
+.field::-webkit-input-placeholder {
+  opacity: 0;
+  transition: opacity 0.2s ease 0.1s;
+}
+.field:focus::-webkit-input-placeholder {
+  opacity: 1;
+}
+
+.hamburger {
+  @apply absolute z-50 flex flex-col items-center invisible w-full h-0 py-4 space-y-4 overflow-hidden transition-all duration-300 bg-white opacity-0 top-28;
+}
+.hamburger.open {
+  @apply visible h-40 opacity-100;
+}
+
+.bar-one,
+.bar-two,
+.bar-three {
+  @apply relative w-full h-1 transition-all duration-300 ease-linear rounded bg-primary;
+  transform-origin: 1px;
+}
+
+.bar-one {
+  transform: rotate(0);
+}
+
+.bar-two {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.bar-three {
+  transform: rotate(0);
+}
+
+.open .bar-one {
+  transform: rotate(45deg);
+}
+
+.open .bar-two {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.open .bar-three {
+  transform: rotate(-45deg);
+}

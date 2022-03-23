@@ -1,85 +1,54 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Layout from '../components/layout/Layout'
+import SlideShow from '../components/slideshow/SlideShow'
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <Layout>
       <Head>
-        <title>Create Next App</title>
+        <title>ベルエステート株式会社</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      <div className="relative flex h-[30rem] w-full">
+        <SlideShow />
+      </div>
+      <div className="container flex flex-col items-center justify-between px-8 mx-auto my-12 space-y-12 md:flex-row md:space-y-0 md:space-x-24 lg:space-x-48 lg:px-20">
+        <div className="md:w-1/2">
+          <div className="relative left-6 flex items-center text-3xl before:absolute before:-top-2 before:-left-6 before:-z-10 before:h-14 before:w-28 before:border-[3px] before:border-primary before:content-['']">
+            <div className="flex items-center mr-2">
+              <Image
+                src="/icons/earmark-person.svg"
+                width={36}
+                height={36}
+                alt="profile"
+              />
+            </div>
+            <span>会社概要</span>
+          </div>
+          <div className="mt-4 text-base">
+            自社物件へのたくさんのお問い合わせありがとうございます。是非1度自社の物件のご内覧をおすすめ致します！これからもたくさんのお問い合わせお待ちしております。
+          </div>
         </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
+        <div className="md:w-1/2">
+          <div className="relative left-6 flex items-center text-3xl before:absolute before:-top-2 before:-left-6 before:-z-10 before:h-14 before:w-28 before:border-[3px] before:border-primary before:content-['']">
+            <div className="flex items-center mr-2">
+              <Image
+                src="/icons/contact-card.svg"
+                width={36}
+                height={36}
+                alt="Contact card"
+              />
+            </div>
+            <span>お問合わせ</span>
+          </div>
+          <div className="mt-4 text-base">
+            自社物件へのたくさんのお問い合わせありがとうございます。是非1度自社の物件のご内覧をおすすめ致します！これからもたくさんのお問い合わせお待ちしております。
+          </div>
+        </div>
+      </div>
+    </Layout>
   )
 }
 

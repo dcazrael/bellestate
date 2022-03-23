@@ -4,7 +4,18 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    colors: {
+      primary: '#00AEEF',
+      black: '#1d1d1d',
+      gray: '#CBCBCB',
+      white: '#ffffff',
+      transparent: 'transparent',
+    },
+    extend: {
+      fontFamily: {
+        zen: '"Zen Kaku Gothic Antique"',
+      },
+    },
   },
   plugins: [],
 }
