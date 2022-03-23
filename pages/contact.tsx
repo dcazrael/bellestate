@@ -7,9 +7,9 @@ import Layout from '../components/layout/Layout'
 import Title from '../components/Title'
 
 const Contact: NextPage = () => {
-  const form = useRef<HTMLFormElement>()
+  const form = useRef<HTMLFormElement | undefined>()
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     emailjs
@@ -46,7 +46,6 @@ const Contact: NextPage = () => {
         </div>
         <form
           className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3"
-          ref={form}
           onSubmit={sendEmail}
         >
           <div className="order-4 md:col-span-full md:row-start-4 lg:col-start-3 lg:row-span-3 lg:row-start-1 lg:place-self-end">
