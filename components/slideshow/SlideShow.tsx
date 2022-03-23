@@ -1,4 +1,4 @@
-import Slide from './slide'
+import Slide from './Slide'
 
 const SlideShow = () => {
   return (
