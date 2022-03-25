@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="flex flex-col justify-center w-full border-t border-primary">
-      <div className="w-full bg-gray">
+      <div className="w-full bg-gray-800">
         <div className="container flex flex-col justify-between px-8 mx-auto my-10 space-y-12 md:flex-row md:space-y-0 lg:px-20">
           <div className="w-full">
             <div className="hidden text-3xl md:block">
@@ -23,8 +23,12 @@ const Footer = () => {
                 <br />
                 ダイソー18号館302号室
               </div>
-              <a href="tel:+81527563072">052-756-3072</a>
-              <a href="fax:+81527563073">052-756-3073</a>
+              <span>
+                Tel: <a href="tel:+81527563072">052-756-3072</a>
+              </span>
+              <span>
+                Fax: <a href="fax:+81527563073">052-756-3073</a>
+              </span>
             </address>
           </div>
           <div className="md:w-1/3">
