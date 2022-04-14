@@ -1,33 +1,52 @@
 import emailjs from '@emailjs/browser'
+import { useFormik } from 'formik'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useRef } from 'react'
+import { useState } from 'react'
+import * as Yup from 'yup'
 import BreadCrumb from '../components/breadcrumb/BreadCrumb'
 import Layout from '../components/layout/Layout'
 import Title from '../components/Title'
 
 const Contact: NextPage = () => {
-  const form = useRef<HTMLFormElement | undefined>()
+  const [buttonState, setButtonState] = useState('確認画面へ')
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      furigana: '',
+      reply_to: '',
+      phone: '',
+      message: '',
+      checkBox: [],
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required('* お名前を入力してください'),
+      furigana: Yup.string().required('* ふりがなを入力してください'),
+      reply_to: Yup.string()
+        .email('メールアドレスが無効です')
+        .required('* メールアドレスを入力してください'),
+      phone: Yup.string().required('* 電話番号を入力してください'),
+      message: Yup.string().required('* お問い合わせ内容を入力してください'),
+      checkBox: Yup.boolean().oneOf([true], '* チェックが必要です'),
+    }),
+    onSubmit: (values) => {
+      try {
+        emailjs
+          .send(
+            process.env.NEXT_PUBLIC_FORMIK_SERVICE_ID!,
+            process.env.NEXT_PUBLIC_FORMIK_TEMPLATE_ID!,
+            values,
+            process.env.NEXT_PUBLIC_FORMIK_USER_ID!
+          )
+          .then(() => {
+            console.log('Success')
+          })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+  })
 
-  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    emailjs
-      .sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        form.current!,
-        'YOUR_USER_ID'
-      )
-      .then(
-        (result) => {
-          console.log(result.text)
-        },
-        (error) => {
-          console.log(error.text)
-        }
-      )
-  }
   return (
     <Layout>
       <Head>
@@ -46,22 +65,33 @@ const Contact: NextPage = () => {
         </div>
         <form
           className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3"
-          onSubmit={sendEmail}
+          onSubmit={formik.handleSubmit}
         >
           <div className="order-4 md:col-span-full md:row-start-4 lg:col-start-3 lg:row-span-3 lg:row-start-1 lg:place-self-end">
-            <div className="flex items-center w-full gap-4">
-              <input type="checkbox" name="confirm" id="confirm" />
-              <label htmlFor="confirm">
-                ご記入が終わりましたら、チェックを入れて [確認画面へ]
-                ボタンを押してください。
-              </label>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center w-full gap-4">
+                <input
+                  type="checkbox"
+                  name="checkBox"
+                  id="checkBox"
+                  onChange={formik.handleChange}
+                />
+                <label htmlFor="checkBox">
+                  ご記入が終わりましたら、チェックを入れて [確認画面へ]
+                  ボタンを押してください。
+                </label>
+              </div>
+              <div className={`ml-8 mt-2 text-red`}>
+                {formik.errors.checkBox}
+              </div>
             </div>
             <div className="mt-8">
-              <input
+              <button
                 type="submit"
-                value="確認画面へ"
                 className="w-full rounded-full border-[3px] border-transparent bg-primary px-3 py-1 font-medium text-white transition-colors duration-300 hover:border-primary hover:bg-transparent hover:text-primary"
-              />
+              >
+                <span>{buttonState}</span>
+              </button>
             </div>
           </div>
           <div className="relative w-full">
@@ -70,6 +100,8 @@ const Contact: NextPage = () => {
               id="name"
               name="name"
               placeholder="松本　明子"
+              onChange={formik.handleChange}
+              value={formik.values.name}
               className="w-full px-3 py-2 text-xl border-2 cursor-pointer field border-primary focus:outline-none"
             />
             <label
@@ -78,6 +110,7 @@ const Contact: NextPage = () => {
             >
               お名前
             </label>
+            <div className={`mt-2 text-red`}>{formik.errors.name}</div>
           </div>
           <div className="relative w-full">
             <input
@@ -85,6 +118,8 @@ const Contact: NextPage = () => {
               id="furigana"
               name="furigana"
               placeholder="まつもと　あきこ"
+              onChange={formik.handleChange}
+              value={formik.values.furigana}
               className="w-full px-3 py-2 text-xl border-2 cursor-pointer field border-primary focus:outline-none"
             />
             <label
@@ -93,21 +128,25 @@ const Contact: NextPage = () => {
             >
               ふりがな
             </label>
+            <div className={`mt-2 text-red`}>{formik.errors.furigana}</div>
           </div>
           <div className="relative w-full">
             <input
               type="email"
-              id="email"
-              name="email"
+              id="reply_to"
+              name="reply_to"
               placeholder="matsumoto.a@example.co.jp"
+              onChange={formik.handleChange}
+              value={formik.values.reply_to}
               className="w-full px-3 py-2 text-xl border-2 cursor-pointer field border-primary focus:outline-none"
             />
             <label
-              htmlFor="email"
+              htmlFor="reply_to"
               className="absolute z-20 px-2 py-1 text-xl transition-all duration-300 bg-transparent top-1 left-1 cursor-text"
             >
               メールアドレス
             </label>
+            <div className={`mt-2 text-red`}>{formik.errors.reply_to}</div>
           </div>
           <div className="relative w-full">
             <input
@@ -115,6 +154,8 @@ const Contact: NextPage = () => {
               id="phone"
               name="phone"
               placeholder="070-1234-5678"
+              onChange={formik.handleChange}
+              value={formik.values.phone}
               className="w-full px-3 py-2 text-xl border-2 cursor-pointer field border-primary focus:outline-none"
             />
             <label
@@ -123,12 +164,15 @@ const Contact: NextPage = () => {
             >
               電話番号
             </label>
+            <div className={`mt-2 text-red`}>{formik.errors.phone}</div>
           </div>
           <div className="relative w-full col-span-2">
             <textarea
               id="message"
               name="message"
               placeholder="まつもと　あきこ"
+              onChange={formik.handleChange}
+              value={formik.values.message}
               className="w-full h-32 px-3 py-2 text-xl border-2 cursor-pointer field border-primary focus:outline-none"
             />
             <label
@@ -137,6 +181,7 @@ const Contact: NextPage = () => {
             >
               お問合わせ内容
             </label>
+            <div className={`mt-2 text-red`}>{formik.errors.message}</div>
           </div>
         </form>
       </div>

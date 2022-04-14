@@ -10,7 +10,8 @@ module.exports = {
       'gray-900': '#E9E9E9',
       'gray-800': '#CBCBCB',
       'gray-600': '#ADADAD',
-      white: '#ffffff',
+      white: '#FFFFFF',
+      red: '#B40000',
       transparent: 'transparent',
     },
     extend: {
