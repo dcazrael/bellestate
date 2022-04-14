@@ -6,10 +6,12 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 import BreadCrumb from '../components/breadcrumb/BreadCrumb'
 import Layout from '../components/layout/Layout'
+import LoadingCube from '../components/LoadingCube'
 import Title from '../components/Title'
 
 const Contact: NextPage = () => {
-  const [buttonState, setButtonState] = useState('確認画面へ')
+  const [loadState, setLoadState] = useState(false)
+  const [sentState, setSentState] = useState(false)
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -17,7 +19,7 @@ const Contact: NextPage = () => {
       reply_to: '',
       phone: '',
       message: '',
-      checkBox: [],
+      checkBox: false,
     },
     validationSchema: Yup.object({
       name: Yup.string().required('* お名前を入力してください'),
@@ -30,6 +32,7 @@ const Contact: NextPage = () => {
       checkBox: Yup.boolean().oneOf([true], '* チェックが必要です'),
     }),
     onSubmit: (values) => {
+      setLoadState(true)
       try {
         emailjs
           .send(
@@ -40,6 +43,10 @@ const Contact: NextPage = () => {
           )
           .then(() => {
             console.log('Success')
+            setLoadState(false)
+            setSentState(true)
+            formik.resetForm()
+            setTimeout(() => setSentState(false), 2500)
           })
       } catch (err) {
         console.log(err)
@@ -67,13 +74,20 @@ const Contact: NextPage = () => {
           className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3"
           onSubmit={formik.handleSubmit}
         >
-          <div className="order-4 md:col-span-full md:row-start-4 lg:col-start-3 lg:row-span-3 lg:row-start-1 lg:place-self-end">
+          <div className="content-between order-4 md:col-span-full md:row-start-4 lg:col-start-3 lg:row-span-3 lg:row-start-1 lg:grow lg:place-self-end">
+            <div className={`${sentState ? 'flex' : 'hidden'} mb-8`}>
+              <span className="w-full rounded-md border-[3px] border-primary p-4 text-center font-bold text-primary">
+                お問い合わせいただきありがとうございます。
+                間もなくご連絡いたします。
+              </span>
+            </div>
             <div className="flex flex-col gap-4">
               <div className="flex items-center w-full gap-4">
                 <input
                   type="checkbox"
                   name="checkBox"
                   id="checkBox"
+                  checked={formik.values.checkBox}
                   onChange={formik.handleChange}
                 />
                 <label htmlFor="checkBox">
@@ -88,9 +102,16 @@ const Contact: NextPage = () => {
             <div className="mt-8">
               <button
                 type="submit"
-                className="w-full rounded-full border-[3px] border-transparent bg-primary px-3 py-1 font-medium text-white transition-colors duration-300 hover:border-primary hover:bg-transparent hover:text-primary"
+                className="flex w-full justify-center space-x-2 rounded-full border-[3px] border-transparent bg-primary px-3 py-1 font-medium text-white transition-colors duration-300 hover:border-primary hover:bg-transparent hover:text-primary"
               >
-                <span>{buttonState}</span>
+                {loadState ? (
+                  <>
+                    <LoadingCube />
+                    <span>送信中</span>
+                  </>
+                ) : (
+                  <span>確認画面へ</span>
+                )}
               </button>
             </div>
           </div>
