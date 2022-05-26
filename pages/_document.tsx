@@ -15,6 +15,10 @@ class CustomDoc extends Document {
             href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700&display=swap"
             rel="stylesheet"
           />
+          <meta
+            name="google-site-verification"
+            content="7RArDTaJfH18l9KBlp2CvxMoSMHL8V6ExF2TobsPMTo"
+          />
         </Head>
         <body>
           <Main />
